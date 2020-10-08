@@ -1,0 +1,11 @@
+---
+title: "Group7 Project"
+author: "Ece Gulkirpik, Johana Coronel, Mengyi Dong"
+date: "10/8/2020"
+output: html_document
+---
+
+```{r}
+install.packages("tidytuesdayR")
+```
+

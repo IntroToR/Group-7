@@ -1,26 +1,52 @@
 ---
-title: "Group7 Project"
+title: "Group7 Project - Coffee Rating"
 author: "Ece Gulkirpik, Johana Coronel, Mengyi Dong"
 date: "10/8/2020"
 output: html_document
 ---
-Project guidelines
--Select the variables of interest and conduct the appropriate filters (Must include at least 3 variables)
--Provide summary statistics of the selected data
--Extract information from the data using [high quality] graphs
--Conduct a statistical analysis such as Analysis of Variance or Linear Regression
--Save the means from the selected variables as a text file.
--Post a selected graph on Twitter using the hashtags #tidytuesday and #RStat
-
 ```{r}
+## Install tidytuesday package
+library(tidyverse)
+library(tidytuesdayR)
 # Read data file
 ## coffee_rating
 coffee_ratings <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-07-07/coffee_ratings.csv')
 ```
 
+1. Introduction - Ece
 
 
 ```{r}
-##
+## Summary statistics of the "Coffee Rating" dataset
+
+
 ```
+
+2. Analysis
+2.1 Total Rating Points for Each Country - Mengyi
+Map chart
+```{r}
+## Code for map chart
+```
+
+2.2 Sensory Attributes of Coffee Species - Johana
+Spider graph
+
+```{r}
+## Code for spider graph
+```
+
+2.3 The Effect of Type of Species, Altitude and Processing Method on Sensory Attributes - Ece
+ANOVA
+```{r}
+## Code for ANOvA statistical analysis
+
+
+```
+
+3. Conclusion - Together
+
+
+4. References
+
 

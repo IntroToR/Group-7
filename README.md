@@ -6,3 +6,13 @@ Johana Coronel, Ece Gulkirpik, Mengyi Dong
 
 10-10-20 We decided to use the "Coffee Rating" dataset from TidyTuesday.
   The outline of project is discussed and setup in the project R markdown file.
+  Mengyi started working on the Analysis part. Created a summary data file for overall coffee rating by country and started on constructing the cholopleth map.
+
+10-10-20 Ece started working on the Introduction part. 
+  Added some background information about coffee
+  Introduced the dataset
+  Run head(), str() and summary() functions
+  Tried to add an image but didn't work. Will try again. 
+  
+
+

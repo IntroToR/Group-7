@@ -6,6 +6,9 @@ output: html_document
 ---
 ```{r}
 ## Install tidytuesday package
+install.packages("tidytuesdayR")
+install.packages("tidyverse")
+
 library(tidyverse)
 library(tidytuesdayR)
 # Read data file
@@ -15,11 +18,26 @@ coffee_ratings <- readr::read_csv('https://raw.githubusercontent.com/rfordatasci
 
 1. Introduction - Ece
 
+  "Coffee_ratings" dataset puts together a great amount of data on the sensorial attributes of difference coffee species which were grown and processed in many different ways by various countries. This dataset not only provides valuable information about the sensory characteristics of coffee species but also gives considerable amount of background information belong to each species including farm and company names, producers, harvest years, and certifications, etc. 
+  
+  "Coffee_ratings" dataset includes 43 variables in which 24 of them are character and the rest are numerical. The details about the variables can be obtained from the following R chunk:
+```{r}
+## Getting to know the variables of "Coffee_ratings" dataset
+
+head(coffee_ratings)
+
+str(coffee_ratings)
+
+```
+
+  Some of these variables can be too technical for the readers who are not familiar to this area. Therefore, before moving to the next sections, it would  be better to learn a little about their meanings. Table 1 presents the descriptions of each variable of "coffee_ratings" dataset.
+  
+  The first step of data analysis is to identify basic statistical properties of a given dataset, such as ranges, means, medians, quartiles, max and min values of variables, etc. For this purpose, as it is shown in the following R chunk, "summary()" function is used.
 
 ```{r}
-## Summary statistics of the "Coffee Rating" dataset
+# Summary statistics of the "Coffee Rating" dataset
 
-
+summary(coffee_ratings)
 ```
 
 2. Analysis

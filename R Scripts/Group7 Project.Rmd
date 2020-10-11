@@ -24,7 +24,6 @@ coffee_ratings <- readr::read_csv('https://raw.githubusercontent.com/rfordatasci
 
 ![Figure.1 Coffee Arabica and Robusta](https://i.imgur.com/TOLbrFK.png)
 
-
   _"Coffee_ratings"_ dataset puts together a great amount of data on the sensorial attributes of these two coffee species which were grown and processed in many different ways by various countries. This dataset not only provides valuable information about the sensory characteristics of coffee species but also gives considerable amount of background information belong to each species including farm and company names, producers, harvest years, and certifications, etc. 
   
   "Coffee_ratings" dataset includes 43 variables in which 24 of them are character and the rest are numerical. The details about the variables can be obtained from the following R chunk:

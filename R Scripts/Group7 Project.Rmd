@@ -37,9 +37,7 @@ str(coffee_ratings)
 ```
 
 <<<<<<< HEAD
-2. Analysis
-2.1 Total Rating Points for Each Country - Mengyi
-We hope to compare the overall rating of different country and regions. To better visualize the data, we proposed to use a map chart with a choropleth world map. Choropleth map is a type of thematic map that usually used to represent an aggregate summary of a geographic characteristic. Here, we use a serial of color shades to represent the average/ mean overall score of coffees from different countries. Also, a summary table of the highest score, lowest score, and average score of each country is provided.
+
 =======
   The first step of data analysis is to identify basic statistical properties of a given dataset, such as ranges, means, medians, quantiles, max and min values of variables, etc. For this purpose, as it is shown in the following R chunk, _"summary()"_ function is used.
 
@@ -53,6 +51,9 @@ summary(coffee_ratings)
 ## 2.1 Total Rating Points for Each Country - Mengyi
 Map chart
 >>>>>>> 8cfbd0b4a3ea251363ace64cb3be578a3aa85c07
+2.1 Total Rating Points for Each Country - Mengyi
+We hope to compare the overall rating of different country and regions. To better visualize the data, we proposed to use a map chart with a choropleth world map. Choropleth map is a type of thematic map that usually used to represent an aggregate summary of a geographic characteristic (Holtz, 2018). Here, we use a serial of color shades to represent the average/ mean overall score of coffees from different countries. Also, a summary table of the highest score, lowest score, and average score of each country is provided.
+
 ```{r}
 ## 2.1.1 Create a summary table with number of coffee rated, highest, lowest, and average rating score for each country.
 ratingbycountry <- coffee_ratings %>%
@@ -101,3 +102,4 @@ ANOVA
 
 2. National Coffee Association (NCA). (2020). The History of Coffee. Retrieved from https://www.ncausa.org/about-coffee/history-of-coffee
 
+3. Holtz, Yan.(2018). Choropleth Map. Retrived from https://www.r-graph-gallery.com/choropleth-map.html

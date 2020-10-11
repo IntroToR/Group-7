@@ -24,9 +24,29 @@ coffee_ratings <- readr::read_csv('https://raw.githubusercontent.com/rfordatasci
 
 2. Analysis
 2.1 Total Rating Points for Each Country - Mengyi
-Map chart
+We hope to compare the overall rating of different country and regions. To better visualize the data, we proposed to use a map chart with a choropleth world map. Choropleth map is a type of thematic map that usually used to represent an aggregate summary of a geographic characteristic. Here, we use a serial of color shades to represent the average/ mean overall score of coffees from different countries. Also, a summary table of the highest score, lowest score, and average score of each country is provided.
 ```{r}
-## Code for map chart
+## 2.1.1 Create a summary table with number of coffee rated, highest, lowest, and average rating score for each country.
+ratingbycountry <- coffee_ratings %>%
+  group_by(country_of_origin) %>%
+  summarise(
+    count = n(),
+    highest_score = max(total_cup_points),
+    lowest_score = min(total_cup_points),
+    mean_score = mean(total_cup_points)
+  )
+write.table(ratingbycountry, file = "/Users/Mengyi/Box/CPSC441 R programming/Group-7 Project/data/Overall_Rating_by_Country.txt")
+
+## 2.1.2 Creating a world map of coffee rating using choropleth map chart.
+require(maps)
+require(viridis)
+theme_set(
+  theme_void()
+)
+## Create a world map.
+world_map <- map_data("world")
+ggplot(world_map, aes(x = long, y = lat, group = group)) +
+  geom_polygon(fill="lightgray", colour = "white")
 ```
 
 2.2 Sensory Attributes of Coffee Species - Johana

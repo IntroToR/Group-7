@@ -115,7 +115,7 @@ write.table(world_coffee_rating, file = "/Users/Mengyi/Box/CPSC441 R programming
 ## Create a world map.
 ggplot(world_coffee_rating, aes(long, lat)) +
   geom_polygon(aes(group = group, fill = mean_score))+
-  geom_text(aes(label = region), data = new_map_label, size = 2, hjust = 0.5) +
+  geom_text(aes(label = region), data = new_map_label, size = 2.5, hjust = 0.5) +
   scale_fill_viridis_c(option = "C") +
   labs(
     title = "Overall Coffee Ratings of Different Countries and Regions",
@@ -124,7 +124,7 @@ ggplot(world_coffee_rating, aes(long, lat)) +
   ) +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme(plot.subtitle = element_text(hjust = 0.5))
-ggsave("/Users/Mengyi/Box/CPSC441 R programming/Group-7 Project/Figures/map_coffee_ratings.png",  width = 24, height = 10)
+ggsave("/Users/Mengyi/Box/CPSC441 R programming/Group-7 Project/Figures/map_coffee_ratings.png",  width = 12, height = 5)
 ```
 
 ## 2.2 Sensory Attributes of Coffee Species - Johana

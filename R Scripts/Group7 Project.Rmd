@@ -7,10 +7,10 @@ output: html_document
 ```{r}
 ## Install tidytuesday package
 install.packages("tidytuesdayR")
-install.packages("tidyverse")
 
 library(tidyverse)
 library(tidytuesdayR)
+library(ggplot2)
 # Read data file
 ## coffee_rating
 coffee_ratings <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-07-07/coffee_ratings.csv')
@@ -49,11 +49,7 @@ summary(coffee_ratings)
 
 # **2. Analysis**
 ## 2.1 Total Rating Points for Each Country - Mengyi
-Map chart
->>>>>>> 8cfbd0b4a3ea251363ace64cb3be578a3aa85c07
-2.1 Total Rating Points for Each Country - Mengyi
 We hope to compare the overall rating of different country and regions. To better visualize the data, we proposed to use a map chart with a choropleth world map. Choropleth map is a type of thematic map that usually used to represent an aggregate summary of a geographic characteristic (Holtz, 2018). Here, we use a serial of color shades to represent the average/ mean overall score of coffees from different countries. Also, a summary table of the highest score, lowest score, and average score of each country is provided.
-
 ```{r}
 ## 2.1.1 Create a summary table with number of coffee rated, highest, lowest, and average rating score for each country.
 ratingbycountry <- coffee_ratings %>%
@@ -66,16 +62,48 @@ ratingbycountry <- coffee_ratings %>%
   )
 write.table(ratingbycountry, file = "/Users/Mengyi/Box/CPSC441 R programming/Group-7 Project/data/Overall_Rating_by_Country.txt")
 
-## 2.1.2 Creating a world map of coffee rating using choropleth map chart.
+## 2.1.2 Create a boxplot to display the coffee rating scores for each country.
+ratingbycoutry <- ggplot(coffee_ratings) +
+  aes(x = country_of_origin, y = total_cup_points) +
+  geom_boxplot(fill = "#d8576b") +
+  labs(x = "Country of origin", y = "Total cup points", title = "Coffee Rating by Country") +
+  theme_linedraw() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
+  theme(plot.title = element_text(hjust = 0.5)) +
+  ylim(55L, 95L)
+ggsave("/Users/Mengyi/Box/CPSC441 R programming/Group-7 Project/Figures/ratingbycoutry.png")
+
+## From the ratingbycountry file, we see that the country names are not standard names. Thus, the first thing to do is to match the country names with standard names in the world map. 
+country_of_origin2 <- c("Brazil", "Burundi","China","Colombia","Costa Rica","Ivory Coast","Ecuador","El Salvador","Ethiopia","Guatemala","Haiti", "Honduras"
+,"India", "Indonesia","Japan","Kenya","Laos", "Malawi","Mauritius","Mexico"               ,"Myanmar","Nicaragua","Panama", "Papua New Guinea","Peru", "Philippines"               ,"Rwanda", "Taiwan","Tanzania", "Thailand","Uganda","USA","USA (Hawaii)", "Puerto Rico" ,"Vietnam", "Zambia","NA")
+
+```
+
+```{r}
+## 2.1.3 Create a choropleth map chart for world coffee rating.
 require(maps)
 require(viridis)
+world_map <- map_data("world")
 theme_set(
   theme_void()
 )
+
+world_map2 <- world_map %>%
+  select(region = country_of_origin2) %>%
+  group_by(region, subregion) %>%
+  summarise(long = mean(long), lat = mean(lat))
+
+## Merge coffee rating data with the map data.
+world_coffee_rating <- ratingbycountry %>%
+  left_join(.,world_map2, by=c("country_of_origin" = "region"))
+
 ## Create a world map.
-world_map <- map_data("world")
-ggplot(world_map, aes(x = long, y = lat, group = group)) +
-  geom_polygon(fill="lightgray", colour = "white")
+ggplot(world_coffee_rating, aes(x = long, y = lat, group = group)) +
+  geom_polygon(aes(group = group, fill = country_of_origin))+
+  geom_text(aes(label = country_of_origin), data = world_coffee_rating,  size = 3, hjust = 0.5)+
+  scale_fill_viridis_d()+
+  theme_void()+
+  theme(legend.position = "none")
 ```
 
 ## 2.2 Sensory Attributes of Coffee Species - Johana

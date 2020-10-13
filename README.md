@@ -14,5 +14,5 @@ Johana Coronel, Ece Gulkirpik, Mengyi Dong
   Run head(), str() and summary() functions
   Tried to add an image but didn't work. Will try again. 
   
-
+10-12-20 Mengyi is working on creating the map chart.
 

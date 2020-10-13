@@ -64,6 +64,8 @@ ratingbycountry <- coffee_ratings %>%
 ratingbycountry[6,1] <- "Ivory Coast"
 ratingbycountry[29,1] <- "Tanzania"
 ratingbycountry[34,1] <- "Puerto Rico"
+ratingbycountry[32,1] <- "USA"
+ratingbycountry[33,1] <- "USA(Hawaii)"
 write.table(ratingbycountry, file = "/Users/Mengyi/Box/CPSC441 R programming/Group-7 Project/data/Overall_Rating_by_Country.txt")
 
 ## 2.1.2 Create a boxplot to display the coffee rating scores for each country.
@@ -87,26 +89,46 @@ world_map <- map_data("world")
 theme_set(
   theme_void()
 )
-## Second, we are going to select countries that are listed in coffee rating.
-country_of_origin2 <- c("Brazil", "Burundi","China","Colombia","Costa Rica","Ivory Coast","Ecuador","El Salvador","Ethiopia","Guatemala","Haiti", "Honduras"
-,"India", "Indonesia","Japan","Kenya","Laos", "Malawi","Mauritius","Mexico"               ,"Myanmar","Nicaragua","Panama", "Papua New Guinea","Peru", "Philippines"               ,"Rwanda", "Taiwan","Tanzania", "Thailand","Uganda","USA","USA (Hawaii)", "Puerto Rico" ,"Vietnam", "Zambia","NA")
-
-world_map2 <- world_map %>%
-  select(region = country_of_origin2) %>%
-  group_by(region, subregion) %>%
+## Second, we are going to select countries that are listed in coffee rating. USA and USA(Hawaii) are excluded from the coutry_of_orignin1 group, and they are listed seperately.
+country_of_origin1 <- c("Brazil", "Burundi","China","Colombia","Costa Rica","Ivory Coast","Ecuador","El Salvador","Ethiopia","Guatemala","Haiti", "Honduras"
+,"India", "Indonesia","Japan","Kenya","Laos", "Malawi","Mauritius","Mexico"               ,"Myanmar","Nicaragua","Panama", "Papua New Guinea","Peru", "Philippines"               ,"Rwanda", "Taiwan","Tanzania", "Thailand","Uganda", "Puerto Rico" ,"Vietnam", "Zambia")
+world_map1 <- map_data ("world", region = country_of_origin1) 
+world_Hawaii <- map_data("world", region = "USA.Hawaii") 
+world_Hawaii[,5] <- "USA(Hawaii)"
+world_USA <- map_data ("world", region = "USA")
+world_USA1<- subset(world_USA, subregion != "Hawaii")
+## Now, merge the map regions.
+new_map <- rbind(world_map1,world_Hawaii,world_USA1)
+## Create labels for mapping regions.
+world_map1_label <- map_data ("world", region = country_of_origin1) %>%
+  group_by(region) %>%
   summarise(long = mean(long), lat = mean(lat))
+world_Hawaii_label <- map_data("world", region = "USA.Hawaii") %>%
+  group_by(region) %>%
+  summarise(long = mean(long), lat = mean(lat))
+world_Hawaii_label[1,1] <- "USA(Hawaii)"
+world_USA1_label<- subset(world_USA, subregion != "Hawaii")%>%
+  group_by(region) %>%
+  summarise(long = mean(long), lat = mean(lat))
+new_map_label <- rbind(world_map1_label,world_Hawaii_label,world_USA1_label)
 
 ## Merge coffee rating data with the map data.
-world_coffee_rating <- ratingbycountry %>%
-  left_join(.,world_map2, by=c("country_of_origin" = "region"))
+world_coffee_rating <- left_join(ratingbycountry,new_map, by=c("country_of_origin" = "region"))
+write.table(world_coffee_rating, file = "/Users/Mengyi/Box/CPSC441 R programming/Group-7 Project/data/mapping_coffee_rating.txt")
 
 ## Create a world map.
-ggplot(world_coffee_rating, aes(x = long, y = lat, group = group)) +
-  geom_polygon(aes(group = group, fill = country_of_origin))+
-  geom_text(aes(label = country_of_origin), data = world_coffee_rating,  size = 3, hjust = 0.5)+
-  scale_fill_viridis_d()+
-  theme_void()+
-  theme(legend.position = "none")
+ggplot(world_coffee_rating, aes(long, lat)) +
+  geom_polygon(aes(group = group, fill = mean_score))+
+  geom_text(aes(label = region), data = new_map_label, size = 2, hjust = 0.5) +
+  scale_fill_viridis_c(option = "C") +
+  labs(
+    title = "Overall Coffee Ratings of Different Countries and Regions",
+    subtitle = "Average Coffee Score for Each Region",
+    caption = "Data: coffee_ratings | Creation: Mengyi Dong | CPSC441 Group-7 Project"
+  ) +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme(plot.subtitle = element_text(hjust = 0.5))
+ggsave("/Users/Mengyi/Box/CPSC441 R programming/Group-7 Project/Figures/map_coffee_ratings.png",  width = 24, height = 10)
 ```
 
 ## 2.2 Sensory Attributes of Coffee Species - Johana

@@ -134,11 +134,114 @@ Spider graph
 ## Code for spider graph
 ```
 
-## 2.3 The Effect of Type of Species, Altitude and Processing Method on Sensory Attributes - Ece
-ANOVA
+## 2.3 The Effect of Type of Species and Processing Method on the Selected Sensory Attributes 
+
+After we have analyzed the sensory attributes, we would like to investigate the effect of processing methods,type of species and their interaction on them. For this purpose, we've run 2-way ANOVA for selected sensory attributes (acidity, aroma, aftertaste, balance, flavor and sweetness). In order to perform this analysis, first, we've created linear models for each attribute. 
+The structure of these models were as follows:
+Z ~ X * Y
+where "Z" is the outcome / dependent variable, like  _aroma_, and "X" and "Y" are independent variables, like _processing method_ and _species_.
 ```{r}
 ## Code for ANOvA statistical analysis
+#First, we removed the missing values from the dataset:
+coffee_ratings2 <- na.omit(coffee_ratings)
+write.csv(coffee_ratings2, "coffee_ratings2.csv")
 
+#acidity
+model_1 = lm(acidity ~ processing_method * species, data=coffee_ratings2)
+model_acidity = aov(model_1)
+summary(model_acidity)
+
+#aroma
+model_2 <- lm(aroma ~ processing_method * species, data=coffee_ratings2)
+model_aroma = aov(model_2)
+summary(model_aroma)
+
+#aftertaste
+model_3 <- lm(aftertaste ~ processing_method * species, data=coffee_ratings2)
+model_aftertaste = aov(model_3)
+summary(model_aftertaste)
+
+#balance
+model_4 <- lm(balance~ processing_method * species, data=coffee_ratings2)
+model_balance = aov(model_4)
+summary(model_balance)
+
+#flavor
+model_5 <- lm(flavor ~ processing_method * species, data=coffee_ratings2)
+model_flavor = aov(model_5)
+summary(model_flavor)
+
+#sweetness
+model_6 <- lm(sweetness ~ processing_method * species, data=coffee_ratings2)
+model_sweetness = aov(model_6)
+summary(model_sweetness)
+```
+
+After that, we highlighted which variable(s) have a significant effect on these sensory attributes by gathering the information we obtained from previous ANOVA analysis in the table below. 
+
+```{r}
+#Factors that have signifcant effects on sensory attributes
+
+A <- c('Acidity','Aroma','Aftertaste','Balance','Balance','Flavor','Sweetness','Sweetness')
+B <- c('process_method','none','process_method', 'process_method', 'species', 'process_method', 'process_method','species')
+C <- c( 0.01, "none", 0.001, 0.001,0.05,0.05,0,0)
+D <- cbind(A,B,C)
+colnames(D) <- c('Sensory_attributes', 'Factor','Significance Level')
+knitr::kable(D, colnames = c('Sensory Attributes', 'Factor','Significance Level'), align = "lcc", format = "pipe")
+```
+
+One of the outcomes shown at the table above, processing methods have a significant effect of flavor at p=0.05 significance level. However, we still don't know which processing method has the most effect on the flavor. Therefore, we would like to run an ls-means test for processing method variable. 
+
+```{r}
+#In order to do this analysis, first, we installed the following packages:
+
+install.packages("multcompview")
+install.packages("plyr")
+install.packages("lsmeans")
+library("lsmeans")
+library("multcompView")
+library("plyr")
+
+#Again, we created our model containing flavor and processing_method variables:
+
+model_fp <- lm(flavor ~ processing_method, data=coffee_ratings2)
+fp = lsmeans(model_fp, pairwise~processing_method, adjust="tukey")
+ls_flavor = CLD(fp, alpha=0.05, Letters=letters, adjust="tukey")
+ls_flavor
+
+# Order the levels for printing
+ls_flavor$processing_method <-factor(ls_flavor$processing_method,c("Other","Washed/Wet","Natural/Dry","Pulped Natural/Honey"))
+levels(ls_flavor$processing_method)
+
+# Remove spaces in .group 
+ls_flavor$.group = gsub(" ","", ls_flavor$.group)
+
+
+#Finally, we would like to plot lsmeans vs processing method graph:
+
+library(ggplot2)
+pd = position_dodge(0.4)
+ggplot(ls_flavor,
+       aes(x=processing_method,
+           y=lsmean,
+           label=.group))+
+  geom_point(shape = 15,
+             size = 4,
+             position = pd)+
+  geom_errorbar(aes(ymin = lower.CL,
+                    ymax = upper.CL),
+                    width = 0.2, 
+                    size = 0.7,
+                    position = pd)+
+  theme_bw()+
+  theme(axis.title = element_text(face = "bold"),
+        axis.text = element_text(face = "bold"),
+        plot.caption = element_text(hjust = 0)) +
+  ylab("Least square mean")+
+  ggtitle("Effect of Processing Methods on Flavor Grade")+
+  geom_text(nudge_x = c(0, 0, 0, 0),
+            nudge_y = c(4, 4, 4, 4),
+            color   = "black")
 
 ```
 

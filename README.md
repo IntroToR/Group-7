@@ -17,4 +17,5 @@ Johana Coronel, Ece Gulkirpik, Mengyi Dong
 10-12-20 Mengyi is working on creating the map chart.
 
 10-13-20 Mengyi finished coffee rating map and related data files are created.
+10-14-20 Johana started to work on the 
 

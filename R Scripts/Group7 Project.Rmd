@@ -132,6 +132,7 @@ Spider graph
 
 ```{r}
 ## Code for spider graph
+#
 ```
 
 ## 2.3 The Effect of Type of Species, Altitude and Processing Method on Sensory Attributes - Ece

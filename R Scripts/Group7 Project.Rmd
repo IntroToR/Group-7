@@ -112,7 +112,7 @@ new_map_label <- rbind(world_map1_label,world_Hawaii_label,world_USA1_label)
 world_coffee_rating <- left_join(ratingbycountry,new_map, by=c("country_of_origin" = "region"))
 write.table(world_coffee_rating, file = "/Users/Mengyi/Box/CPSC441 R programming/Group-7 Project/data/mapping_coffee_rating.txt")
 
-## Create a world map.
+## Create a choropleth world map.
 ggplot(world_coffee_rating, aes(long, lat)) +
   geom_polygon(aes(group = group, fill = mean_score))+
   geom_text(aes(label = region), data = new_map_label, size = 2.5, hjust = 0.5) +
@@ -126,6 +126,7 @@ ggplot(world_coffee_rating, aes(long, lat)) +
   theme(plot.subtitle = element_text(hjust = 0.5))
 ggsave("/Users/Mengyi/Box/CPSC441 R programming/Group-7 Project/Figures/map_coffee_ratings.png",  width = 12, height = 5)
 ```
+From the map, we are able to tell which country/ region's coffee has the highest overall quality. On the color scale, bright yellow represents the highest average rating score, while the purple represents the lowest rating score. Based on the colors, coffee from Ethiopia and Papua New Guinea has the best overall quality followed by the coffee from Japan. However, coffee from Ivory Coast and Ecuador has relative lower scores compare to other countries. 
 
 ## 2.2 Sensory Attributes of Coffee Species - Johana
 Spider graph

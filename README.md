@@ -18,3 +18,9 @@ Johana Coronel, Ece Gulkirpik, Mengyi Dong
 
 10-13-20 Mengyi finished coffee rating map and related data files are created.
 
+10-14 & 15 - 20 Ece worked on the ANOVA part:
+  Completed the 2 way anova analysis on 6 different sensory variables 
+  Created a sumary table for ANOVA data
+  Run lsmeans test for processing method variable 
+  Worked on creating a plot fot lsmeans test but hasn't finished yet.
+

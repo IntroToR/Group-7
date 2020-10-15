@@ -23,4 +23,7 @@ Johana Coronel, Ece Gulkirpik, Mengyi Dong
   Created a sumary table for ANOVA data
   Run lsmeans test for processing method variable 
   Worked on creating a plot fot lsmeans test but hasn't finished yet.
+  
+  10-14-20 Johana started to work on the 
+Done the spider chart. Based on the cuping score I plot the best score coffee that comes from Ethiopia and the lowest score that comes from Ecuador. 
 

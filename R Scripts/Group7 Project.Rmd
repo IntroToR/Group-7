@@ -133,6 +133,52 @@ Spider graph
 
 ```{r}
 ## Code for spider graph
+#2.2.1.1 Create the data sets for sensory atributes. Since Ethiopia has the highest score on cup points and Ecuador has the lowest. We will show in a Spider plot how the sensory attributes look for both countries.
+
+library(fmsb)
+
+#Summary of sensory atributes from Ethiopia.
+data_sensory_1= select(coffee_ratings,country_of_origin, aroma, flavor, aftertaste, acidity, body, balance, uniformity, sweetness, moisture)
+
+ethiophia_data_sensory= filter(data_sensory_1, country_of_origin== "Ethiopia")
+ethiophia_data_sensory
+
+graph_sensory_et= select(ethiophia_data_sensory, aroma, flavor, aftertaste, acidity, body, balance, uniformity, sweetness, moisture)
+graph_sensory_et
+class(graph_sensory_et)
+
+#Summary of sensory atributes from Ecuador
+ecuador_data_sensory= filter(data_sensory_1, country_of_origin== "Ecuador")
+ecuador_data_sensory
+
+graph_sensory_ec= select(ecuador_data_sensory, aroma, flavor, aftertaste, acidity, body, balance, uniformity, sweetness, moisture)
+graph_sensory_ec
+class(graph_sensory_ec)
+
+#Average of summary attributes from Ethiopia and Ecuador
+Ethiopia = colMeans(graph_sensory_et[sapply(graph_sensory_et, is.numeric)])
+Ecuador = colMeans(graph_sensory_ec[sapply(graph_sensory_et, is.numeric)])
+
+df_et_ecu = as.data.frame(t(cbind(Ethiopia, Ecuador)))
+df_et_ecu
+
+#To use the fmbs package, We have to add 2 lines to the dataframe: max and min of each variable to show on plot
+data_sensory_graph_ethiopia_ecuador= rbind(rep(10,5), rep(0,5), df_et_ecu)
+
+#Color vector
+colors_border=c( rgb(0.2,0.5,0.5,0.9), rgb(0.8,0.2,0.5,0.9) , rgb(0.7,0.5,0.1,0.9) )
+colors_in=c( rgb(0.2,0.5,0.5,0.4), rgb(0.8,0.2,0.5,0.4) , rgb(0.7,0.5,0.1,0.4) )
+
+#Radarchart
+radarchart(data_sensory_graph_ethiopia_ecuador, axistype=2 ,
+           pcol=colors_border , pfcol=colors_in , plwd=4 , plty=1,
+           cglcol="grey", cglty=1, axislabcol="grey", caxislabels=seq(0,20,5), cglwd=0.8,
+           vlcex=0.8, title = "Sensory Atributes of Coffee from Ethiopia and Ecuador",
+    )
+
+legend(x=1.2, y=1, legend = rownames(df_et_ecu[1:2,]), bty = "n", pch=20 , col=colors_in , text.col = "grey", cex=1.2, pt.cex=3)      
+
+
 ```
 
 ## 2.3 The Effect of Type of Species and Processing Method on the Selected Sensory Attributes 

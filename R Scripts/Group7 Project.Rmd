@@ -268,7 +268,7 @@ ls_flavor$.group = gsub(" ","", ls_flavor$.group)
 
 library(ggplot2)
 pd = position_dodge(0.4)
-ggplot(ls_flavor,
+p <- ggplot(ls_flavor,
        aes(x=processing_method,
            y=lsmean,
            label=.group))+
@@ -289,6 +289,9 @@ ggplot(ls_flavor,
   geom_text(nudge_x = c(0, 0, 0, 0),
             nudge_y = c(4, 4, 4, 4),
             color   = "black")
+p
+png(file="C:/Users/Gulkirpik/Box Sync/Courses/UIUC Fall'20/Group-7/Figures.png",
+width=600, height=350)
 ```
 
 # **3. Conclusion** - Together

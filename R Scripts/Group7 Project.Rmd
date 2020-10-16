@@ -8,6 +8,7 @@ output:
 ---
 ```{r}
 ## Install and load packages
+library(dplyr)
 library(tidyverse)
 library(tidytuesdayR)
 library(ggplot2)
@@ -37,9 +38,6 @@ str(coffee_ratings)
 
 ```
 
-<<<<<<< HEAD
-
-=======
   The first step of data analysis is to identify basic statistical properties of a given dataset, such as ranges, means, medians, quantiles, max and min values of variables, etc. For this purpose, as it is shown in the following R chunk, _"summary()"_ function is used.
 
 ```{r}
@@ -49,7 +47,7 @@ summary(coffee_ratings)
 ```
 
 # **2. Analysis**
-## 2.1 Total Rating Points for Each Country - Mengyi
+## 2.1 Total Rating Points for Each Country 
 We hope to compare the overall rating of different country and regions. To better visualize the data, we proposed to use a map chart with a choropleth world map. Choropleth map is a type of thematic map that usually used to represent an aggregate summary of a geographic characteristic (Holtz, 2018). The procedure of creating a choropleth world map with different datasets was described by kassambara(2020). We used it in this project with modifications. Here, we use a serial of color shades to represent the average/ mean overall score of coffees from different countries. Also, a summary table of the highest score, lowest score, and average score of each country is provided.
 ```{r}
 ## 2.1.1 Create a summary table with number of coffee rated, highest, lowest, and average rating score for each country.
@@ -113,7 +111,6 @@ new_map_label <- rbind(world_map1_label,world_Hawaii_label,world_USA1_label)
 
 ## Merge coffee rating data with the map data.
 world_coffee_rating <- left_join(ratingbycountry,new_map, by=c("country_of_origin" = "region"))
-
 
 ## Create a choropleth world map.
 ggplot(world_coffee_rating, aes(long, lat)) +

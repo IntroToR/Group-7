@@ -66,7 +66,7 @@ ratingbycountry[29,1] <- "Tanzania"
 ratingbycountry[34,1] <- "Puerto Rico"
 ratingbycountry[32,1] <- "USA"
 ratingbycountry[33,1] <- "USA(Hawaii)"
-write.table(ratingbycountry, file = "/Users/Mengyi/Box/CPSC441 R programming/Group-7 Project/data/Overall_Rating_by_Country.txt")
+write.table(ratingbycountry, file = "https://github.com/IntroToR/Group-7/tree/master/data/Overall_Rating_by_Country.txt")
 
 ## 2.1.2 Create a boxplot to display the coffee rating scores for each country.
 countryrating.plot <- ggplot(coffee_ratings) +
@@ -267,7 +267,7 @@ ls_flavor$.group = gsub(" ","", ls_flavor$.group)
 
 library(ggplot2)
 pd = position_dodge(0.4)
-p <- ggplot(ls_flavor,
+ggplot(ls_flavor,
        aes(x=processing_method,
            y=lsmean,
            label=.group))+
@@ -288,7 +288,6 @@ p <- ggplot(ls_flavor,
   geom_text(nudge_x = c(0, 0, 0, 0),
             nudge_y = c(4, 4, 4, 4),
             color   = "black")
-ggsave("/Users/Mengyi/Box/CPSC441 R programming/Group-7 Project/Figures/lsmean.png",  width = 7, height = 5)
 ```
 
 # **3. Conclusion** - Together

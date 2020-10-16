@@ -27,3 +27,7 @@ Johana Coronel, Ece Gulkirpik, Mengyi Dong
   10-14-20 Johana started to work on the 
 Done the spider chart. Based on the cuping score I plot the best score coffee that comes from Ethiopia and the lowest score that comes from Ecuador. 
 
+10-15-20 Final editings were made byt the group. The document has been saved as pdf. 
+
+10-16-20 Finalizing the fils.
+

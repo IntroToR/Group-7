@@ -242,9 +242,6 @@ One of the outcomes shown at the table above, processing methods have a signific
 ```{r}
 #In order to do this analysis, first, we installed the following packages:
 
-install.packages("multcompview")
-install.packages("plyr")
-install.packages("lsmeans")
 library("lsmeans")
 library("multcompView")
 library("plyr")
@@ -289,7 +286,7 @@ p <- ggplot(ls_flavor,
   geom_text(nudge_x = c(0, 0, 0, 0),
             nudge_y = c(4, 4, 4, 4),
             color   = "black")
-p
+ggsave("/Users/Mengyi/Box/CPSC441 R programming/Group-7 Project/Figures/lsmean.png",  width = 7, height = 5)
 ```
 
 # **3. Conclusion** - Together

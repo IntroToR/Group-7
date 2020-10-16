@@ -129,7 +129,6 @@ ggplot(world_coffee_rating, aes(long, lat)) +
 From the map, we are able to tell which country/ region's coffee has the highest overall quality. On the color scale, bright yellow represents the highest average rating score, while the purple represents the lowest rating score. Based on the colors, coffee from Ethiopia and Papua New Guinea has the best overall quality followed by the coffee from Japan. However, coffee from Ivory Coast and Ecuador has relative lower scores compare to other countries. 
 
 ## 2.2 Sensory Attributes of Coffee Species 
-Spider graph
 
 ```{r}
 ## Code for spider graph
@@ -246,28 +245,21 @@ library("lsmeans")
 library("multcompView")
 library("plyr")
 
-# Order the levels for printing
-ls_flavor$processing_method <-factor(ls_flavor$processing_method,c("Other","Washed/Wet","Natural/Dry","Pulped Natural/Honey"))
-levels(ls_flavor$processing_method)
 
 #Again, we created our model containing flavor and processing_method variables:
 
 model_fp <- lm(flavor ~ processing_method, data=coffee_ratings2)
 fp = lsmeans(model_fp, pairwise~processing_method, adjust="tukey")
-ls_flavor = CLD(fp, alpha=0.05, Letters=letters, adjust="tukey")
-ls_flavor
-
-# Remove spaces in .group 
-ls_flavor$.group = gsub(" ","", ls_flavor$.group)
+fp2 <- as.data.frame(fp)
+fp3 = fp2[1:4,-2]
 
 #Finally, we would like to plot lsmeans vs processing method graph:
 
 library(ggplot2)
 pd = position_dodge(0.4)
-p <- ggplot(ls_flavor,
+p <- ggplot(fp3,
        aes(x=processing_method,
-           y=lsmean,
-           label=.group))+
+           y=lsmean))+
   geom_point(shape = 15,
              size = 4,
              position = pd)+
@@ -276,22 +268,19 @@ p <- ggplot(ls_flavor,
                     width = 0.2, 
                     size = 0.7,
                     position = pd)+
+  geom_text(label = c("b", "a", "ab","b"), aes(y = c(7.75, 7.65, 8.00, 7.75), x = processing_method), size = 4)+
   theme_bw()+
   theme(axis.title = element_text(face = "bold"),
         axis.text = element_text(face = "bold"),
         plot.caption = element_text(hjust = 0)) +
   ylab("Least square mean")+
-  ggtitle("Effect of Processing Methods on Flavor Grade")+
-  geom_text(nudge_x = c(0, 0, 0, 0),
-            nudge_y = c(4, 4, 4, 4),
-            color   = "black")
+  ggtitle("Effect of Processing Methods on Flavor Grade")
 p
 ggsave('p.png',width=6, height=4,dpi=300)
 ```
 
-# **3. Conclusion** - Together
-In this project, we explored the “coffee_rating” dataset in “TidyTuesday”. First, we demonstrated the overall quality of coffee for different countries using a choropleth map; the result showed that Ethiopia and Papua New Guinea had the highest average rating scores, while Ivory Coast and Ecuador had the lowest rating scores.
-Next, we performed a two-way ANOVA analysis to investigate if the sensory attributes of coffee are significantly affected by processing methods, type of coffee species or their interactions. Finally, we applied ls-means test to understand whether whether there is a significant differences between processing methods n terms of their impact of flavor of the coffee species. 
+# **3. Conclusion** 
+In this project, we explored the “coffee_rating” dataset in “TidyTuesday”. First, we demonstrated the overall quality of coffee for different countries using a choropleth map; the result showed that Ethiopia and Papua New Guinea had the highest average rating scores, while Ivory Coast and Ecuador had the lowest rating scores. Then, we decided to plot in a spider chart the sensory attributes from Ethiopia and Ecuador that has the highest and the lowest rating scores respectively in order to see which attribute affects the cup score. We found that balance, body and sweetness are the attributes that affect the cup score in Ecuadorian coffee. Next, we performed a two-way ANOVA analysis to investigate if the sensory attributes of coffee are significantly affected by processing methods, type of coffee species or their interactions. Finally, we applied ls-means test to understand whether there is a significant differences between processing methods in terms of their impact on flavor of the coffee species.
 
 # **4. References**
 

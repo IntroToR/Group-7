@@ -2,7 +2,9 @@
 title: "Group7 Project - Coffee Rating"
 author: "Ece Gulkirpik, Johana Coronel, Mengyi Dong"
 date: "10/8/2020"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 ```{r}
 ## Install and load packages

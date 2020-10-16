@@ -4,6 +4,7 @@ author: "Ece Gulkirpik, Johana Coronel, Mengyi Dong"
 date: "10/8/2020"
 output: html_document
 ---
+
 ```{r}
 ## Install and load packages
 library(tidyverse)
@@ -242,9 +243,9 @@ One of the outcomes shown at the table above, processing methods have a signific
 ```{r}
 #In order to do this analysis, first, we installed the following packages:
 
-library("lsmeans")
-library("multcompView")
-library("plyr")
+library(lsmeans)
+library(multcompView)
+library(plyr)
 
 #Again, we created our model containing flavor and processing_method variables:
 

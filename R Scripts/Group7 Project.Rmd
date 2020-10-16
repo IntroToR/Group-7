@@ -1,10 +1,8 @@
-<<<<<<< HEAD
 ---
 title: "Group7 Project - Coffee Rating"
 author: "Ece Gulkirpik, Johana Coronel, Mengyi Dong"
-date: "10/8/2020"
+date: "10/16/2020"
 output:
-  pdf_document: default
   html_document: default
 ---
 
@@ -68,7 +66,7 @@ ratingbycountry[29,1] <- "Tanzania"
 ratingbycountry[34,1] <- "Puerto Rico"
 ratingbycountry[32,1] <- "USA"
 ratingbycountry[33,1] <- "USA(Hawaii)"
-write.table(ratingbycountry, file = "https://github.com/IntroToR/Group-7/tree/master/data/Overall_Rating_by_Country.txt")
+write.table(ratingbycountry, file = "Overall_Rating_by_Country.txt")
 ratingbycountry
 ```
 
@@ -82,7 +80,7 @@ countryrating.plot <- ggplot(coffee_ratings) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
   theme(plot.title = element_text(hjust = 0.5)) +
   ylim(55L, 95L)
-ggsave("https://github.com/IntroToR/Group-7/tree/master/Figures/ratingbycoutry.png",  width = 12, height = 5)
+ggsave("ratingbycoutry.png",  width = 12, height = 5)
 countryrating.plot
 ```
 
@@ -124,7 +122,7 @@ new_map_label
 ```{r}
 ## Merge coffee rating data with the map data.
 world_coffee_rating <- left_join(ratingbycountry,new_map, by=c("country_of_origin" = "region"))
-write.table(world_coffee_rating, file = "https://github.com/IntroToR/Group-7/tree/master/data/mapping_coffee_rating.txt")
+write.table(world_coffee_rating, file = "mapping_coffee_rating.txt")
 world_coffee_rating
 ```
 
@@ -141,9 +139,10 @@ coffee_rating_map <- ggplot(world_coffee_rating, aes(long, lat)) +
   ) +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme(plot.subtitle = element_text(hjust = 0.5))
-ggsave("https://github.com/IntroToR/Group-7/tree/master/Figures/map_coffee_ratings.png",  width = 12, height = 5)
+ggsave("map_coffee_ratings.png", width = 12, height = 5)
 coffee_rating_map
 ```
+
 From the map, we are able to tell which country/ region's coffee has the highest overall quality. On the color scale, bright yellow represents the highest average rating score, while the purple represents the lowest rating score. Based on the colors, coffee from Ethiopia and Papua New Guinea has the best overall quality followed by the coffee from Japan. However, coffee from Ivory Coast and Ecuador has relative lower scores compare to other countries. 
 
 ## 2.2 Sensory Attributes of Coffee Species - Johana
@@ -152,308 +151,6 @@ Spider graph
 ```{r}
 ## Code for spider graph
 #2.2.1.1 Create the data sets for sensory atributes. Since Ethiopia has the highest score on cup points and Ecuador has the lowest. We will show in a Spider plot how the sensory attributes look for both countries.
-
-library(fmsb)
-
-#Summary of sensory atributes from Ethiopia.
-data_sensory_1= select(coffee_ratings,country_of_origin, aroma, flavor, aftertaste, acidity, body, balance, uniformity, sweetness, moisture)
-
-ethiophia_data_sensory= filter(data_sensory_1, country_of_origin== "Ethiopia")
-ethiophia_data_sensory
-
-graph_sensory_et= select(ethiophia_data_sensory, aroma, flavor, aftertaste, acidity, body, balance, uniformity, sweetness, moisture)
-graph_sensory_et
-class(graph_sensory_et)
-
-#Summary of sensory atributes from Ecuador
-ecuador_data_sensory= filter(data_sensory_1, country_of_origin== "Ecuador")
-ecuador_data_sensory
-
-graph_sensory_ec= select(ecuador_data_sensory, aroma, flavor, aftertaste, acidity, body, balance, uniformity, sweetness, moisture)
-graph_sensory_ec
-class(graph_sensory_ec)
-
-#Average of summary attributes from Ethiopia and Ecuador
-Ethiopia = colMeans(graph_sensory_et[sapply(graph_sensory_et, is.numeric)])
-Ecuador = colMeans(graph_sensory_ec[sapply(graph_sensory_et, is.numeric)])
-
-df_et_ecu = as.data.frame(t(cbind(Ethiopia, Ecuador)))
-df_et_ecu
-
-#To use the fmbs package, We have to add 2 lines to the dataframe: max and min of each variable to show on plot
-data_sensory_graph_ethiopia_ecuador= rbind(rep(10,5), rep(0,5), df_et_ecu)
-
-#Color vector
-colors_border=c( rgb(0.2,0.5,0.5,0.9), rgb(0.8,0.2,0.5,0.9) , rgb(0.7,0.5,0.1,0.9) )
-colors_in=c( rgb(0.2,0.5,0.5,0.4), rgb(0.8,0.2,0.5,0.4) , rgb(0.7,0.5,0.1,0.4) )
-
-#Radarchart
-radarchart(data_sensory_graph_ethiopia_ecuador, axistype=2 ,
-           pcol=colors_border , pfcol=colors_in , plwd=4 , plty=1,
-           cglcol="grey", cglty=1, axislabcol="grey", caxislabels=seq(0,20,5), cglwd=0.8,
-           vlcex=0.8, title = "Sensory Atributes of Coffee from Ethiopia and Ecuador",
-    )
-
-legend(x=1.2, y=1, legend = rownames(df_et_ecu[1:2,]), bty = "n", pch=20 , col=colors_in , text.col = "grey", cex=1.2, pt.cex=3)      
-
-
-```
-
-## 2.3 The Effect of Type of Species and Processing Method on the Selected Sensory Attributes 
-
-After we have analyzed the sensory attributes, we would like to investigate the effect of processing methods,type of species and their interaction on them. For this purpose, we've run 2-way ANOVA for selected sensory attributes (acidity, aroma, aftertaste, balance, flavor and sweetness). In order to perform this analysis, first, we've created linear models for each attribute. 
-The structure of these models were as follows:
-Z ~ X * Y
-where "Z" is the outcome / dependent variable, like  _aroma_, and "X" and "Y" are independent variables, like _processing method_ and _species_.
-```{r}
-## Code for ANOvA statistical analysis
-#First, we removed the missing values from the dataset:
-coffee_ratings2 <- na.omit(coffee_ratings)
-write.csv(coffee_ratings2, "coffee_ratings2.csv")
-
-#acidity
-model_1 = lm(acidity ~ processing_method * species, data=coffee_ratings2)
-model_acidity = aov(model_1)
-summary(model_acidity)
-
-#aroma
-model_2 <- lm(aroma ~ processing_method * species, data=coffee_ratings2)
-model_aroma = aov(model_2)
-summary(model_aroma)
-
-#aftertaste
-model_3 <- lm(aftertaste ~ processing_method * species, data=coffee_ratings2)
-model_aftertaste = aov(model_3)
-summary(model_aftertaste)
-
-#balance
-model_4 <- lm(balance~ processing_method * species, data=coffee_ratings2)
-model_balance = aov(model_4)
-summary(model_balance)
-
-#flavor
-model_5 <- lm(flavor ~ processing_method * species, data=coffee_ratings2)
-model_flavor = aov(model_5)
-summary(model_flavor)
-
-#sweetness
-model_6 <- lm(sweetness ~ processing_method * species, data=coffee_ratings2)
-model_sweetness = aov(model_6)
-summary(model_sweetness)
-```
-
-After that, we highlighted which variable(s) have a significant effect on these sensory attributes by gathering the information we obtained from previous ANOVA analysis in the table below. 
-
-```{r}
-#Factors that have signifcant effects on sensory attributes
-
-A <- c('Acidity','Aroma','Aftertaste','Balance','Balance','Flavor','Sweetness','Sweetness')
-B <- c('process_method','none','process_method', 'process_method', 'species', 'process_method', 'process_method','species')
-C <- c( 0.01, "none", 0.001, 0.001,0.05,0.05,0,0)
-D <- cbind(A,B,C)
-colnames(D) <- c('Sensory_attributes', 'Factor','Significance Level')
-knitr::kable(D, colnames = c('Sensory Attributes', 'Factor','Significance Level'), align = "lcc", format = "pipe")
-```
-
-One of the outcomes shown at the table above, processing methods have a significant effect of flavor at p=0.05 significance level. However, we still don't know which processing method has the most effect on the flavor. Therefore, we would like to run an ls-means test for processing method variable. 
-
-```{r}
-#In order to do this analysis, first, we installed the following packages:
-
-library(lsmeans)
-library(multcompView)
-library(plyr)
-
-#Again, we created our model containing flavor and processing_method variables:
-
-model_fp <- lm(flavor ~ processing_method, data=coffee_ratings2)
-fp = lsmeans(model_fp, pairwise~processing_method, adjust="tukey")
-ls_flavor = CLD(fp, alpha=0.05, Letters=letters, adjust="tukey")
-ls_flavor
-
-# Order the levels for printing
-ls_flavor$processing_method <-factor(ls_flavor$processing_method,c("Other","Washed/Wet","Natural/Dry","Pulped Natural/Honey"))
-levels(ls_flavor$processing_method)
-
-# Remove spaces in .group 
-ls_flavor$.group = gsub(" ","", ls_flavor$.group)
-
-
-#Finally, we would like to plot lsmeans vs processing method graph:
-
-library(ggplot2)
-pd = position_dodge(0.4)
-ggplot(ls_flavor,
-       aes(x=processing_method,
-           y=lsmean,
-           label=.group))+
-  geom_point(shape = 15,
-             size = 4,
-             position = pd)+
-  geom_errorbar(aes(ymin = lower.CL,
-                    ymax = upper.CL),
-                    width = 0.2, 
-                    size = 0.7,
-                    position = pd)+
-  theme_bw()+
-  theme(axis.title = element_text(face = "bold"),
-        axis.text = element_text(face = "bold"),
-        plot.caption = element_text(hjust = 0)) +
-  ylab("Least square mean")+
-  ggtitle("Effect of Processing Methods on Flavor Grade")+
-  geom_text(nudge_x = c(0, 0, 0, 0),
-            nudge_y = c(4, 4, 4, 4),
-            color   = "black")
-```
-
-# **3. Conclusion** - Together
-
-
-# **4. References**
-
-1. Institute for Scientific Information on Coffee (ISIC). (2014, November 24). Where Coffee Grows. Retrieved from https://www.coffeeandhealth.org/all-about-coffee/where-coffee-grows/ 
-
-2. National Coffee Association (NCA). (2020). The History of Coffee. Retrieved from https://www.ncausa.org/about-coffee/history-of-coffee
-
-3. Holtz, Yan.(2018). Choropleth Map. Retrived from https://www.r-graph-gallery.com/choropleth-map.html
-
-4. kassambara. (2020). How to Create a Map using GGPlot2. Retrived from https://www.datanovia.com/en/blog/how-to-create-a-map-using-ggplot2/
-=======
----
-title: "Group7 Project - Coffee Rating"
-author: "Ece Gulkirpik, Johana Coronel, Mengyi Dong"
-date: "10/8/2020"
-output:
-  html_document: default
-  pdf_document: default
----
-```{r}
-## Install and load packages
-library(dplyr)
-library(tidyverse)
-library(tidytuesdayR)
-library(ggplot2)
-# Read data file
-## coffee_rating
-coffee_ratings <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-07-07/coffee_ratings.csv')
-```
-
-# **1. Introduction** 
-
-  Coffee traces its origin to a genus of plants known as Coffea. The two most commercially important species grown are varieties of _Coffeaarabica_ (Arabicas) and _Coffeacanephora_ (Robustas) (ISIC, 2014).
-  
-  Coffee Arabica is descended from the original coffee trees discovered in Ethiopia.  These trees produce a fine, mild, aromatic coffee and represent approximately 70% of the world's coffee production. The beans are flatter and more elongated than Robusta and lower in caffeine. Most of the world's Robusta is grown in Central and Western Africa, parts of Southeast Asia, including Indonesia and Vietnam, and in Brazil. Production of Robusta is increasing, though it accounts for only about 30% of the world market. Robusta is primarily used in blends and for instant coffees. The Robusta bean itself tends to be slightly rounder and smaller than an Arabica bean (NCA, 2020). The infographic given in the figure below also presents some general information about the differences between Coffee Arabica and Robusta.
-
-```{r}
-knitr::include_graphics("https://github.com/IntroToR/Group-7/blob/master/Figures/Coffee-chemistry-%E2%80%93-arabica-vs-robusta.png")
-```
-  _"Coffee_ratings"_ dataset puts together a great amount of data on the sensorial attributes of these two coffee species which were grown and processed in many different ways by various countries. This dataset not only provides valuable information about the sensory characteristics of coffee species but also gives considerable amount of background information belong to each species including farm and company names, producers, harvest years, and certifications, etc. 
-  
-  "Coffee_ratings" dataset includes 43 variables in which 24 of them are character and the rest are numerical. The details about the variables can be obtained from the following R chunk:
-```{r}
-## Getting to know the variables of "Coffee_ratings" dataset
-
-head(coffee_ratings)
-
-str(coffee_ratings)
-
-```
-
-  The first step of data analysis is to identify basic statistical properties of a given dataset, such as ranges, means, medians, quantiles, max and min values of variables, etc. For this purpose, as it is shown in the following R chunk, _"summary()"_ function is used.
-
-```{r}
-# Summary statistics of the "Coffee Rating" dataset
-
-summary(coffee_ratings)
-```
-
-# **2. Analysis**
-## 2.1 Total Rating Points for Each Country 
-We hope to compare the overall rating of different country and regions. To better visualize the data, we proposed to use a map chart with a choropleth world map. Choropleth map is a type of thematic map that usually used to represent an aggregate summary of a geographic characteristic (Holtz, 2018). The procedure of creating a choropleth world map with different datasets was described by kassambara(2020). We used it in this project with modifications. Here, we use a serial of color shades to represent the average/ mean overall score of coffees from different countries. Also, a summary table of the highest score, lowest score, and average score of each country is provided.
-```{r}
-## 2.1.1 Create a summary table with number of coffee rated, highest, lowest, and average rating score for each country.
-ratingbycountry <- coffee_ratings %>%
-  group_by(country_of_origin) %>%
-  summarise(
-    count = n(),
-    highest_score = max(total_cup_points),
-    lowest_score = min(total_cup_points),
-    mean_score = mean(total_cup_points)
-  )
-## From the ratingbycountry file, we see that some of the country names are not standard names. Thus, the first thing to do is to match the country names with standard names in the world map.
-ratingbycountry[6,1] <- "Ivory Coast"
-ratingbycountry[29,1] <- "Tanzania"
-ratingbycountry[34,1] <- "Puerto Rico"
-ratingbycountry[32,1] <- "USA"
-ratingbycountry[33,1] <- "USA(Hawaii)"
-
-
-## 2.1.2 Create a boxplot to display the coffee rating scores for each country.
-countryrating.plot <- ggplot(coffee_ratings) +
-  aes(x = country_of_origin, y = total_cup_points) +
-  geom_boxplot(fill = "#d8576b") +
-  labs(x = "Country of origin", y = "Total cup points", title = "Coffee Rating by Country") +
-  theme_linedraw() +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
-  theme(plot.title = element_text(hjust = 0.5)) +
-  ylim(55L, 95L)
-
-
-## 2.1.3 Create a choropleth map chart for world coffee rating.
-## First, we need to load the packages.
-require(maps)
-require(viridis)
-world_map <- map_data("world")
-theme_set(
-  theme_void()
-)
-## Second, we are going to select countries that are listed in coffee rating. USA and USA(Hawaii) are excluded from the coutry_of_orignin1 group, and they are listed seperately.
-country_of_origin1 <- c("Brazil", "Burundi","China","Colombia","Costa Rica","Ivory Coast","Ecuador","El Salvador","Ethiopia","Guatemala","Haiti", "Honduras"
-,"India", "Indonesia","Japan","Kenya","Laos", "Malawi","Mauritius","Mexico"               ,"Myanmar","Nicaragua","Panama", "Papua New Guinea","Peru", "Philippines"               ,"Rwanda", "Taiwan","Tanzania", "Thailand","Uganda", "Puerto Rico" ,"Vietnam", "Zambia")
-world_map1 <- map_data ("world", region = country_of_origin1) 
-world_Hawaii <- map_data("world", region = "USA.Hawaii") 
-world_Hawaii[,5] <- "USA(Hawaii)"
-world_USA <- map_data ("world", region = "USA")
-world_USA1<- subset(world_USA, subregion != "Hawaii")
-## Now, merge the map regions.
-new_map <- rbind(world_map1,world_Hawaii,world_USA1)
-## Create labels for mapping regions.
-world_map1_label <- map_data ("world", region = country_of_origin1) %>%
-  group_by(region) %>%
-  summarise(long = mean(long), lat = mean(lat))
-world_Hawaii_label <- map_data("world", region = "USA.Hawaii") %>%
-  group_by(region) %>%
-  summarise(long = mean(long), lat = mean(lat))
-world_Hawaii_label[1,1] <- "USA(Hawaii)"
-world_USA1_label<- subset(world_USA, subregion != "Hawaii")%>%
-  group_by(region) %>%
-  summarise(long = mean(long), lat = mean(lat))
-new_map_label <- rbind(world_map1_label,world_Hawaii_label,world_USA1_label)
-
-## Merge coffee rating data with the map data.
-world_coffee_rating <- left_join(ratingbycountry,new_map, by=c("country_of_origin" = "region"))
-
-## Create a choropleth world map.
-ggplot(world_coffee_rating, aes(long, lat)) +
-  geom_polygon(aes(group = group, fill = mean_score))+
-  geom_text(aes(label = region), data = new_map_label, size = 2.5, hjust = 0.5) +
-  scale_fill_viridis_c(option = "C") +
-  labs(
-    title = "Overall Coffee Ratings of Different Countries and Regions",
-    subtitle = "Average Coffee Score for Each Region",
-    caption = "Data: coffee_ratings | Creation: Mengyi Dong | CPSC441 Group-7 Project"
-  ) +
-  theme(plot.title = element_text(hjust = 0.5)) +
-  theme(plot.subtitle = element_text(hjust = 0.5))
-
-```
-From the map, we are able to tell which country/ region's coffee has the highest overall quality. On the color scale, bright yellow represents the highest average rating score, while the purple represents the lowest rating score. Based on the colors, coffee from Ethiopia and Papua New Guinea has the best overall quality followed by the coffee from Japan. However, coffee from Ivory Coast and Ecuador has relative lower scores compare to other countries. 
-
-## 2.2 Sensory Attributes of Coffee Species 
-
-```{r}
-## Code for spider graph
-#2.2.1.1 Create the data sets for sensory attributes. Since Ethiopia has the highest score on cup points and Ecuador has the lowest. We will show in a Spider plot how the sensory attributes look for both countries.
 
 library(fmsb)
 

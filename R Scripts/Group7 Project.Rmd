@@ -248,7 +248,6 @@ library("lsmeans")
 library("multcompView")
 library("plyr")
 
-
 # Order the levels for printing
 ls_flavor$processing_method <-factor(ls_flavor$processing_method,c("Other","Washed/Wet","Natural/Dry","Pulped Natural/Honey"))
 levels(ls_flavor$processing_method)
@@ -262,7 +261,6 @@ ls_flavor
 
 # Remove spaces in .group 
 ls_flavor$.group = gsub(" ","", ls_flavor$.group)
-
 
 #Finally, we would like to plot lsmeans vs processing method graph:
 
@@ -294,7 +292,8 @@ ggsave('p.png',width=6, height=4,dpi=300)
 ```
 
 # **3. Conclusion** - Together
-
+In this project, we explored the “coffee_rating” dataset in “TidyTuesday”. First, we demonstrated the overall quality of coffee for different countries using a choropleth map; the result showed that Ethiopia and Papua New Guinea had the highest average rating scores, while Ivory Coast and Ecuador had the lowest rating scores.
+Next, we performed a two-way ANOVA analysis to investigate if the sensory attributes of coffee are significantly affected by processing methods, type of coffee species or their interactions. Finally, we applied ls-means test to understand whether whether there is a significant differences between processing methods n terms of their impact of flavor of the coffee species. 
 
 # **4. References**
 

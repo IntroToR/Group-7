@@ -20,7 +20,7 @@ coffee_ratings <- readr::read_csv('https://raw.githubusercontent.com/rfordatasci
 
   Coffee traces its origin to a genus of plants known as Coffea. The two most commercially important species grown are varieties of _Coffeaarabica_ (Arabicas) and _Coffeacanephora_ (Robustas) (ISIC, 2014).
   
-  Coffee Arabica is descended from the original coffee trees discovered in Ethiopia.  These trees produce a fine, mild, aromatic coffee and represent approximately 70% of the world's coffee production. The beans are flatter and more elongated than Robusta and lower in caffeine. Most of the world's Robusta is grown in Central and Western Africa, parts of Southeast Asia, including Indonesia and Vietnam, and in Brazil. Production of Robusta is increasing, though it accounts for only about 30% of the world market. Robusta is primarily used in blends and for instant coffees. The Robusta bean itself tends to be slightly rounder and smaller than an Arabica bean (NCA, 2020). The infographic given in Figure 1 also presents some general information about the differences between Coffee Arabica and Robusta.
+  Coffee Arabica is descended from the original coffee trees discovered in Ethiopia.  These trees produce a fine, mild, aromatic coffee and represent approximately 70% of the world's coffee production. The beans are flatter and more elongated than Robusta and lower in caffeine. Most of the world's Robusta is grown in Central and Western Africa, parts of Southeast Asia, including Indonesia and Vietnam, and in Brazil. Production of Robusta is increasing, though it accounts for only about 30% of the world market. Robusta is primarily used in blends and for instant coffees. The Robusta bean itself tends to be slightly rounder and smaller than an Arabica bean (NCA, 2020). The infographic given in the figure below also presents some general information about the differences between Coffee Arabica and Robusta.
 
 ```{r}
 knitr::include_graphics("https://github.com/IntroToR/Group-7/blob/master/Figures/Coffee-chemistry-%E2%80%93-arabica-vs-robusta.png")
@@ -131,12 +131,12 @@ ggplot(world_coffee_rating, aes(long, lat)) +
 ```
 From the map, we are able to tell which country/ region's coffee has the highest overall quality. On the color scale, bright yellow represents the highest average rating score, while the purple represents the lowest rating score. Based on the colors, coffee from Ethiopia and Papua New Guinea has the best overall quality followed by the coffee from Japan. However, coffee from Ivory Coast and Ecuador has relative lower scores compare to other countries. 
 
-## 2.2 Sensory Attributes of Coffee Species - Johana
+## 2.2 Sensory Attributes of Coffee Species 
 Spider graph
 
 ```{r}
 ## Code for spider graph
-#2.2.1.1 Create the data sets for sensory atributes. Since Ethiopia has the highest score on cup points and Ecuador has the lowest. We will show in a Spider plot how the sensory attributes look for both countries.
+#2.2.1.1 Create the data sets for sensory attributes. Since Ethiopia has the highest score on cup points and Ecuador has the lowest. We will show in a Spider plot how the sensory attributes look for both countries.
 
 library(fmsb)
 
@@ -305,3 +305,5 @@ Next, we performed a two-way ANOVA analysis to investigate if the sensory attrib
 3. Holtz, Yan.(2018). Choropleth Map. Retrived from https://www.r-graph-gallery.com/choropleth-map.html
 
 4. kassambara. (2020). How to Create a Map using GGPlot2. Retrived from https://www.datanovia.com/en/blog/how-to-create-a-map-using-ggplot2/
+
+5.Mangiafico, S. S. (2016). Least Square Means for Multiple Comparisons. Retrieved October 16, 2020, from https://rcompanion.org/handbook/G_06.html 

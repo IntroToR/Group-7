@@ -22,8 +22,9 @@ coffee_ratings <- readr::read_csv('https://raw.githubusercontent.com/rfordatasci
   
   Coffee Arabica is descended from the original coffee trees discovered in Ethiopia.  These trees produce a fine, mild, aromatic coffee and represent approximately 70% of the world's coffee production. The beans are flatter and more elongated than Robusta and lower in caffeine. Most of the world's Robusta is grown in Central and Western Africa, parts of Southeast Asia, including Indonesia and Vietnam, and in Brazil. Production of Robusta is increasing, though it accounts for only about 30% of the world market. Robusta is primarily used in blends and for instant coffees. The Robusta bean itself tends to be slightly rounder and smaller than an Arabica bean (NCA, 2020). The infographic given in Figure 1 also presents some general information about the differences between Coffee Arabica and Robusta.
 
-![Figure.1.CoffeeSpecies](Figures/Coffee-chemistry-–-arabica-vs-robusta.png) 
-
+```{r}
+knitr::include_graphics("https://github.com/IntroToR/Group-7/blob/master/Figures/Coffee-chemistry-%E2%80%93-arabica-vs-robusta.png")
+```
   _"Coffee_ratings"_ dataset puts together a great amount of data on the sensorial attributes of these two coffee species which were grown and processed in many different ways by various countries. This dataset not only provides valuable information about the sensory characteristics of coffee species but also gives considerable amount of background information belong to each species including farm and company names, producers, harvest years, and certifications, etc. 
   
   "Coffee_ratings" dataset includes 43 variables in which 24 of them are character and the rest are numerical. The details about the variables can be obtained from the following R chunk:
